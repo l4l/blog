@@ -13,7 +13,7 @@ div.post-container
       div.divider(v-if="customData.length - 1 !== index")
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import marked from 'marked'
 import hljs from 'highlight.js'
@@ -32,10 +32,9 @@ export default Vue.extend({
   name: 'Blog',
   props: ['customData'],
   data: function () {
-    const page: string | undefined = this.$route.params.name
+    const page = this.$route.params.name
     if (page !== undefined) {
-      // eslint-disable-next-line
-      (this as any).renderPage(page)
+      this.renderPage(page)
     }
     return {
       page,
@@ -43,8 +42,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    // eslint-disable-next-line
-    openPage: function (event: any) {
+    openPage: function (event) {
       this.page = event.currentTarget.id
       this.renderPage(this.page)
       this.$router.push({ path: '/posts/' + this.page })
@@ -53,14 +51,13 @@ export default Vue.extend({
       return this.page !== undefined
     },
     unsertPage: function () {
-      (this.page as string | undefined) = undefined
+      this.page = undefined
     },
     backToList: function () {
       this.unsertPage()
       this.$router.push({ path: '/posts' })
     },
-    // eslint-disable-next-line
-    renderPage: function (page: string) {
+    renderPage: function (page) {
       const xmlHttp = new XMLHttpRequest()
       xmlHttp.onreadystatechange = () => {
         if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
@@ -78,20 +75,19 @@ export default Vue.extend({
       xmlHttp.send(null)
     },
     parsedPosts: function () {
-      const processed = this.customData.map(function (item: string) {
-        const group = postFormat.exec(item)?.groups
+      const processed = this.customData.map(function (item) {
+        const group = postFormat.exec(item).groups
         if (group !== undefined) {
-          group.prettyName = group?.name.replace(/_/g, ' ').replace(
+          group.prettyName = group.name.replace(/_/g, ' ').replace(
             /\w\S*/g,
-            (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+            (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
           )
           group.filename = item
         }
         return group
       })
 
-      // eslint-disable-next-line
-      processed.sort((a: any, b: any) => {
+      processed.sort((a, b) => {
         const yearCmp = b.year - a.year
         const monthCmp = b.month - a.month
         const dayCmp = b.day - a.day

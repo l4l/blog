@@ -6,7 +6,7 @@ div.block
   img(src="../assets/141.jpg").avatar
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 
 export default Vue.extend({

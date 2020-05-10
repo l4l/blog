@@ -26,7 +26,7 @@ div#app
     p {{ new Date().getFullYear() }} &bull; &copy;kitsu
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 
 import Blog from './components/Blog.vue'
@@ -82,8 +82,7 @@ export default Vue.extend({
   name: 'App',
   data: function () {
     return {
-      // eslint-disable-next-line
-      currentTab: (this as any).currentTabFn(this.$route.path),
+      currentTab: this.currentTabFn(this.$route.path),
       tabs,
       contacts
     }
@@ -92,9 +91,8 @@ export default Vue.extend({
     headerTabs: function () {
       return this.tabs.filter((x) => x.name !== undefined)
     },
-    currentTabFn: function (path: string) {
-      // eslint-disable-next-line
-      const tab = tabs.filter((x: any) => x.route !== undefined).find((x: any) => path.startsWith(x.route))
+    currentTabFn: function (path) {
+      const tab = tabs.filter((x) => x.route !== undefined).find((x) => path.startsWith(x.route))
       const currentTab = tab === undefined ? tabs[0] : tab
       return currentTab
     }

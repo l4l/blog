@@ -2,7 +2,7 @@
 node_modules
 /dist
 
-/src/posts.ts
+/src/posts.js
 
 # local env files
 .env.local
