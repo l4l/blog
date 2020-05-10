@@ -16,8 +16,7 @@ div.post-container
 <script>
 import Vue from 'vue'
 import marked from 'marked'
-import hljs from 'highlight.js'
-import 'highlight.js/styles/gruvbox-light.css'
+import hljs from '@/highlighter.config'
 
 marked.setOptions({
   highlight: function (code, language) {
