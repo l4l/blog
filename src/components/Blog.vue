@@ -163,10 +163,18 @@ div.post {
 
 <style>
 code {
-  display: inline-block;
-  text-align-last: left;
+  display: block;
   background: #eee;
   box-shadow: -1px 1px 3px #aaa;
   padding: 5px;
+  border-radius: 3px;
+  font-family: "Fira Code", Courier, monospace;
+  font-size: 14px;
+  overflow: auto;
+}
+
+p > code {
+  display: inline;
+  padding: 0 3px;
 }
 </style>
