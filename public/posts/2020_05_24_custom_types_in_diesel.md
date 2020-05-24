@@ -152,4 +152,4 @@ pub enum Language {
 }
 ```
 
-You can find complete sources used in this post [here](https://github.com/l4l/diesel-custom-types).
+You can find complete sources used in this post [here](https://github.com/l4l/diesel-custom-types) and leave a comment on [reddit](https://www.reddit.com/r/rust/comments/gptvej/custom_types_in_diesel/).
