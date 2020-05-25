@@ -6,13 +6,10 @@ div#app
       router-link.route-link(v-if="tab.route != undefined", :to="tab.route")
         p.route(v-bind:key='tab.name',
                 v-on:click='currentTab = tab')
-          a.external-link(v-if="tab.link !== undefined", :href="tab.link") {{tab.name}}
-          span(v-else) {{tab.name}}
+          span {{tab.name}}
       span(v-else)
-        p.route(v-bind:key='tab.name',
-                v-on:click='currentTab = tab')
-          a.external-link(v-if="tab.link !== undefined", :href="tab.link") {{tab.name}}
-          span(v-else) {{tab.name}}
+        p.route
+          a.external-link(target="_blank", :href="tab.link") {{tab.name}}
   div.main
     transition(name="fade", mode="out-in")
       component(v-bind:is="currentTab.component",
