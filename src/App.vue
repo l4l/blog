@@ -73,6 +73,10 @@ const tabs = [
     route: '/whoami'
   },
   {
+    name: 'RSS',
+    link: '/feed.xml'
+  },
+  {
     name: 'Report issue',
     link: 'https://github.com/l4l/l4l.github.io/issues/new'
   }
