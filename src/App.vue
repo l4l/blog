@@ -40,19 +40,19 @@ const contacts = [
   {
     href: 'mxilyo:mxil@kiysu.me',
     textOnmouseover: "this.href=this.href.replace(/x/g, 'a').replace(/y/g, 't')",
-    src: './icons/envelope.svg'
+    src: '/icons/envelope.svg'
   },
   {
     href: 'https://github.com/l4l',
-    src: './icons/github.svg'
+    src: '/icons/github.svg'
   },
   {
     href: 'https://telegram.me/kitsu',
-    src: './icons/telegram.svg'
+    src: '/icons/telegram.svg'
   },
   {
     href: 'https://www.linkedin.com/in/kitsu/',
-    src: './icons/linkedin.svg'
+    src: '/icons/linkedin.svg'
   }
 ]
 

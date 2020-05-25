@@ -2,7 +2,7 @@
 div.post-container
   div.post(v-if="isPage()")
     button(v-on:click="backToList")
-      img(src="icons/back.svg")
+      img(src="/icons/back.svg")
     article(v-html="pageContent")
   div.listing(v-else)
     template(v-for="(post, index) in parsedPosts()")
@@ -78,7 +78,7 @@ export default Vue.extend({
         }
       }
       this.$nextTick()
-      xmlHttp.open('GET', './posts/' + page + '.md', true)
+      xmlHttp.open('GET', '/posts/' + page + '.md', true)
       xmlHttp.send(null)
 
       const group = postFormat.exec(page).groups
