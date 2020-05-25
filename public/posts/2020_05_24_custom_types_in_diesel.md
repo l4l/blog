@@ -1,3 +1,4 @@
+<!-- 2020/05/24 17:55:01 -->
 # Custom types in Diesel
 
 Recently, in a personal project, I decided to use [diesel](http://diesel.rs/), an ORM for Rust language that supports some popular relational databases. My hands-on experience with ORM was quite limited at that time, and I first made an SQL schema without even analysing for supported features. Unfortunately, my beliefs in seamless type integration between an app and schema were broken quite soon. Consider the following SQL schema:

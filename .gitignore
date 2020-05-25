@@ -4,6 +4,8 @@ node_modules
 
 /src/posts.js
 
+/public/feed.xml
+
 # local env files
 .env.local
 .env.*.local
