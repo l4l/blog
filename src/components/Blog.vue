@@ -27,6 +27,13 @@ marked.setOptions({
 
 const postFormat = /(?<year>[0-9]+)_(?<month>[0-9]+)_(?<day>[0-9]+)_(?<name>.*)/
 
+function makePrettyName (name) {
+  return name.replace(/_/g, ' ').replace(
+    /\w\S*/g,
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+  )
+}
+
 export default Vue.extend({
   name: 'Blog',
   props: ['customData'],
@@ -49,11 +56,12 @@ export default Vue.extend({
     isPage: function () {
       return this.page !== undefined
     },
-    unsertPage: function () {
+    unsetPage: function () {
       this.page = undefined
+      document.title = document.title.replace(/ :: .*/, '')
     },
     backToList: function () {
-      this.unsertPage()
+      this.unsetPage()
       this.$router.push({ path: '/posts' })
     },
     renderPage: function (page) {
@@ -72,15 +80,15 @@ export default Vue.extend({
       this.$nextTick()
       xmlHttp.open('GET', './posts/' + page + '.md', true)
       xmlHttp.send(null)
+
+      const group = postFormat.exec(page).groups
+      document.title += ' :: ' + makePrettyName(group.name)
     },
     parsedPosts: function () {
       const processed = this.customData.map(function (item) {
         const group = postFormat.exec(item).groups
         if (group !== undefined) {
-          group.prettyName = group.name.replace(/_/g, ' ').replace(
-            /\w\S*/g,
-            (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-          )
+          group.prettyName = makePrettyName(group.name)
           group.filename = item
         }
         return group
@@ -100,7 +108,7 @@ export default Vue.extend({
   watch: {
     $route (to) {
       if (to.path === '/posts') {
-        this.unsertPage()
+        this.unsetPage()
       }
     }
   }
