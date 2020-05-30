@@ -3,7 +3,7 @@ node_modules
 /dist
 
 /src/posts.js
-
+/draft
 /public/feed.xml
 
 # local env files
