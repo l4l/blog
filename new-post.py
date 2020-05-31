@@ -38,8 +38,13 @@ def publish(name):
 
     for item in listdir(POST_PATH):
         if item.find(post_filename(name)) != -1:
-            print('Post `{}` already published as {}'.format(name, item))
-            exit(4)
+            print('Post `{}` already published as {}, still proceed? y/N'.format(name, item))
+            yn = input().lower()
+
+            if yn != 'y' and yn != 'yes':
+                exit(4)
+            else:
+                rename(POST_PATH + item, POST_PATH + item + '.old')
 
     now = datetime.now()
     filename = POST_PATH + now.strftime('%Y_%m_%d_') + post_filename(name)
