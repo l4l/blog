@@ -181,8 +181,12 @@ code {
   overflow: auto;
 }
 
-p > code {
+p > code, p > a > code {
   display: inline;
   padding: 0 3px;
+}
+
+article a {
+  text-decoration: none;
 }
 </style>
