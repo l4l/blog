@@ -97,3 +97,5 @@ The another issue with an async mutex is a deadlock behaviour. As you probably a
 ## Conclusion
 
 Several trade-offs should be taken into account while choosing the right approach. Firstly, make sure that you even need a mutex and whether you need a multi-threaded executor. Then the decision is quite simple: either use a standard mutex if it is not shared across await points otherwise use an async one. The last statement possibly is not always correct, so for the pickiest ones, it is always better to write relevant benchmark.
+
+You may leave a comment on [reddit](https://www.reddit.com/r/rust/comments/guivuf/mutex_in_async_world/).
