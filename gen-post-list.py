@@ -19,8 +19,8 @@ def make_item(file):
 
     return rfeed.Item(
         title = file[11:].replace('_', ' ').title(),
-        link = 'https://kitsu.me/#/posts/' + file,
-        guid = rfeed.Guid('https://kitsu.me/#/posts/' + file),
+        link = 'https://kitsu.me/posts/' + file,
+        guid = rfeed.Guid('https://kitsu.me/posts/' + file),
         pubDate = datetime.strptime(pubDate, '%Y/%m/%d %H:%M:%S') ,
     )
 
