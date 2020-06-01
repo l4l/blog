@@ -4,7 +4,7 @@ from os import listdir, stat
 from datetime import datetime
 import rfeed
 
-POSTS_PATH = './public/posts/'
+POSTS_PATH = './public/_posts/'
 POSTS_SUFFIX = '.md'
 
 files = [f[:f.rfind(POSTS_SUFFIX)] for f in listdir(POSTS_PATH)]

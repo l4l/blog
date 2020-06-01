@@ -78,7 +78,7 @@ export default Vue.extend({
         }
       }
       this.$nextTick()
-      xmlHttp.open('GET', '/posts/' + page + '.md', true)
+      xmlHttp.open('GET', '/_posts/' + page + '.md', true)
       xmlHttp.send(null)
 
       const group = postFormat.exec(page).groups

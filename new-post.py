@@ -5,7 +5,7 @@ from sys import argv
 from os import rename, path, listdir
 
 DRAFT_PATH = 'draft/'
-POST_PATH = 'public/posts/'
+POST_PATH = 'public/_posts/'
 
 
 def post_filename(name):
