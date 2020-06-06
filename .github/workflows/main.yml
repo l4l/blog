@@ -16,7 +16,6 @@ jobs:
 
       - name: Install and Build
         run: |
-          pip install --user rfeed
           npm install
           npm run build
 

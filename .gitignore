@@ -5,6 +5,7 @@ node_modules
 /src/posts.js
 /draft
 /public/feed.xml
+/public/atom.xml
 /public/posts/*.old
 
 # local env files

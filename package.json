@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "python gen-post-list.py && vue-cli-service serve",
-    "build": "python gen-post-list.py && vue-cli-service build",
+    "serve": "node populate-posts.js && vue-cli-service serve",
+    "build": "node populate-posts.js && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "feed": "^4.2.0",
     "marked": "^1.0.0",
+    "micro-strptime": "^0.2.3",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6"
   },
