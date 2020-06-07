@@ -3,7 +3,7 @@ const fs = require('fs');
 const strptime = require('micro-strptime').strptime;
 
 const postsPath = 'public/_posts/'
-const postFormat = /^([0-9]+)_([0-9]+)_([0-9]+)_(?<name>.*)\.md$/
+const postFormat = /^([0-9]+)_([0-9]+)_([0-9]+)_(?<name>.*)$/
 
 
 async function find_posts() {
@@ -12,7 +12,7 @@ async function find_posts() {
     for await (const dirent of dir) {
         posts.push(dirent.name)
     }
-    return posts
+    return posts.map((p) => p.replace(/\.md$/, ''))
 }
 
 async function gen_post_list(posts) {
@@ -36,7 +36,7 @@ async function gen_rss(posts) {
             return x[0].toUpperCase() + x.substr(1)
         }).join(' ')
 
-        const pubDate = fs.readFileSync(postsPath + post, 'utf8').slice(5, 24)
+        const pubDate = fs.readFileSync(postsPath + post + '.md', 'utf8').slice(5, 24)
 
         feed.addItem({
             title: name,
