@@ -67,17 +67,20 @@ export default Vue.extend({
     renderPage: function (page) {
       const xmlHttp = new XMLHttpRequest()
       xmlHttp.onreadystatechange = () => {
+        var content
         if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-          this.pageContent = marked(xmlHttp.responseText)
+          content = marked(xmlHttp.responseText)
         } else if (xmlHttp.status <= 599 && xmlHttp.status >= 400) {
-          this.pageContent = 'Post unavailable (code ' +
+          content = 'Post unavailable (code ' +
             xmlHttp.status +
             '), sorry. Please write me down so I can fix it up.'
         } else {
-          this.pageContent = 'Unknown page'
+          content = 'Unknown page'
         }
+        this.$nextTick().then(() => {
+          this.pageContent = content
+        })
       }
-      this.$nextTick()
       xmlHttp.open('GET', '/_posts/' + page + '.md', true)
       xmlHttp.send(null)
 
