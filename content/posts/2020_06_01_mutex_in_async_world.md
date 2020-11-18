@@ -1,4 +1,8 @@
-<!-- 2020/06/01 13:54:10 -->
+---
+title: Mutex in Async World
+pubDate: 2020-06-01 13:54:10
+---
+
 # Mutex in async world
 
 Ever met with the following error while playing around with a `std::sync::Mutex` in async code?

@@ -1,12 +1,14 @@
 .DS_Store
 node_modules
 /dist
+/.nuxt
 
 /src/posts.js
 /draft
-/public/feed.xml
-/public/atom.xml
-/public/posts/*.old
+/static/feed.xml
+/static/atom.xml
+/content/posts/*.old
+/assets/posts.js
 
 # local env files
 .env.local
