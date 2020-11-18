@@ -1,3 +1,6 @@
+import FMMode from 'frontmatter-markdown-loader/mode'
+import path from 'path'
+
 export default {
   head: {
     title: 'kitsu\'s blog',
@@ -11,12 +14,26 @@ export default {
     ]
   },
   css: [],
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/prism', mode: 'client' }
+  ],
   components: false,
   buildModules: [],
-  modules: [
-    '@nuxt/content',
-  ],
   build: {
+    extend (config, _ctx) {
+      config.module.rules.push(
+        {
+          test: /\.md$/,
+          loader: 'frontmatter-markdown-loader',
+          include: path.resolve(__dirname, 'articles'),
+          options: {
+            mode: [FMMode.VUE_COMPONENT],
+            vue: {
+              root: 'markdown-body'
+            }
+          }
+        }
+      )
+    }
   }
 }

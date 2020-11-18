@@ -2,20 +2,22 @@
   "name": "blog",
   "private": true,
   "scripts": {
-    "dev": "node gen-rss.js && nuxt",
-    "build": "node gen-rss.js && nuxt build",
+    "dev": "node populate-posts.js && nuxt",
+    "build": "node populate-posts.js && nuxt build",
     "start": "nuxt start",
-    "generate": "node gen-rss.js && nuxt generate"
+    "generate": "node populate-posts.js && nuxt generate"
   },
   "dependencies": {
     "@nuxt/content": "^1.10.0",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "prismjs": "^1.22.0"
   },
   "devDependencies": {
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
     "feed": "^4.2.0",
-    "micro-strptime": "^0.2.3"
+    "micro-strptime": "^0.2.3",
+    "frontmatter-markdown-loader": "^3.6.1"
   }
 }

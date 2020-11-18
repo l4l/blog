@@ -1,12 +1,14 @@
 <template lang="pug">
 div.post
   article
-    nuxt-content(:document="article")
+    component(:is="post")
   button(v-on:click="backToList")
     img(src="/icons/back.svg")
 </template>
 
 <script>
+import Prism from '~/plugins/prism'
+
 function makePrettyName(name) {
   return name.replace(/_/g, ' ').replace(
     /\w\S*/g,
@@ -15,13 +17,10 @@ function makePrettyName(name) {
 }
 
 export default {
-  async asyncData({ $content, params }) {
-    const article = await $content('posts', params.slug).fetch()
-
-    return { article }
-  },
+  props: ["post"],
   mounted() {
     document.title += ' :: ' + makePrettyName(document.URL.replace(/.*\/\d+_\d+_\d+_/, ''))
+    Prism.highlightAll()
   },
   methods: {
     backToList: function () {
@@ -74,5 +73,9 @@ p > code, p > a > code {
 
 article a {
   text-decoration: none;
+}
+
+code {
+  box-shadow: none !important;
 }
 </style>

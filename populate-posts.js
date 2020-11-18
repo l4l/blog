@@ -2,7 +2,7 @@ const Feed = require('feed').Feed;
 const fs = require('fs');
 const strptime = require('micro-strptime').strptime;
 
-const postsPath = 'content/posts/'
+const postsPath = 'articles/'
 const postFormat = /^([0-9]+)_([0-9]+)_([0-9]+)_(?<name>.*)$/
 const pubDatFormat = /\npubDate: (?<date>.*)?\n/
 
@@ -20,6 +20,30 @@ async function gen_post_list(posts) {
     const file = await fs.promises.open('assets/posts.js', 'w+')
     file.write('const posts = [' + posts.map((p) => `\n  '${p.replace(/\.md$/, '')}'`).join(',') + '\n]\n')
     file.write('export default posts\n')
+}
+
+async function gen_post_pages(posts) {
+    for (fname of posts) {
+        var fileContent = `<template lang="pug">
+Post(:post="Content")/
+</template>
+
+<script>
+import Post from '~/components/post'
+import Data from '~/articles/${fname}.md'
+
+export default {
+  components: {
+    Post,
+  },
+  data: () => ({
+    Content: Data.vue.component
+  })
+}
+</script>
+`
+        fs.writeFileSync(`pages/posts/${fname}.vue`, fileContent)
+    }
 }
 
 async function gen_rss(posts) {
@@ -54,5 +78,6 @@ async function gen_rss(posts) {
 find_posts()
     .then((posts) => {
         gen_post_list(posts)
+        gen_post_pages(posts)
         gen_rss(posts)
     })
