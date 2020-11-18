@@ -2,8 +2,9 @@ const Feed = require('feed').Feed;
 const fs = require('fs');
 const strptime = require('micro-strptime').strptime;
 
-const postsPath = 'public/_posts/'
+const postsPath = 'articles/'
 const postFormat = /^([0-9]+)_([0-9]+)_([0-9]+)_(?<name>.*)$/
+const pubDatFormat = /\npubDate: (?<date>.*)?\n/
 
 
 async function find_posts() {
@@ -16,9 +17,33 @@ async function find_posts() {
 }
 
 async function gen_post_list(posts) {
-    const file = await fs.promises.open('src/posts.js', 'w+')
-    file.write('const posts = [' + posts.map((p) => `'${p.replace(/\.md$/, '')}'`).join(', ') + ']\n')
+    const file = await fs.promises.open('assets/posts.js', 'w+')
+    file.write('const posts = [' + posts.map((p) => `\n  '${p.replace(/\.md$/, '')}'`).join(',') + '\n]\n')
     file.write('export default posts\n')
+}
+
+async function gen_post_pages(posts) {
+    for (fname of posts) {
+        var fileContent = `<template lang="pug">
+Post(:post="Content")/
+</template>
+
+<script>
+import Post from '~/components/post'
+import Data from '~/articles/${fname}.md'
+
+export default {
+  components: {
+    Post,
+  },
+  data: () => ({
+    Content: Data.vue.component
+  })
+}
+</script>
+`
+        fs.writeFileSync(`pages/posts/${fname}.vue`, fileContent)
+    }
 }
 
 async function gen_rss(posts) {
@@ -36,22 +61,23 @@ async function gen_rss(posts) {
             return x[0].toUpperCase() + x.substr(1)
         }).join(' ')
 
-        const pubDate = fs.readFileSync(postsPath + post + '.md', 'utf8').slice(5, 24)
+        const pubDate = pubDatFormat.exec(fs.readFileSync(postsPath + post + '.md', 'utf8')).groups.date
 
         feed.addItem({
             title: name,
             id: 'https://kitsu.me/posts/' + post,
             link: 'https://kitsu.me/posts/' + post,
-            date: strptime(pubDate, '%Y/%m/%d %H:%M:%S') ,
+            date: strptime(pubDate, '%Y-%m-%d %H:%M:%S') ,
         })
     }
 
-    fs.writeFileSync('public/feed.xml', feed.rss2())
-    fs.writeFileSync('public/atom.xml', feed.atom1())
+    fs.writeFileSync('static/feed.xml', feed.rss2())
+    fs.writeFileSync('static/atom.xml', feed.atom1())
 }
 
 find_posts()
     .then((posts) => {
         gen_post_list(posts)
+        gen_post_pages(posts)
         gen_rss(posts)
     })
