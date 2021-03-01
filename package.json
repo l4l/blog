@@ -11,7 +11,7 @@
     "@nuxt/content": "^1.10.0",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
-    "prismjs": "^1.22.0"
+    "prismjs": "^1.23.0"
   },
   "devDependencies": {
     "pug": "^3.0.0",
