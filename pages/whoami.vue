@@ -3,7 +3,7 @@ div.block
   div.text
     p(v-for="paragraph in paragraphs") {{paragraph}}
   span
-  img(src="~/assets/141.jpg").avatar
+  img(src="/141.jpg").avatar
 </template>
 
 <script>
