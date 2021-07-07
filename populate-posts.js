@@ -1,40 +1,68 @@
 const Feed = require('feed').Feed;
 const fs = require('fs');
-const strptime = require('micro-strptime').strptime;
+const fm = require('front-matter');
 
 const postsPath = 'articles/'
-const postFormat = /^([0-9]+)_([0-9]+)_([0-9]+)_(?<name>.*)$/
-const pubDatFormat = /\npubDate: (?<date>.*)?\n/
 
 
 async function find_posts() {
     var posts = []
     const dir = await fs.promises.opendir(postsPath)
     for await (const dirent of dir) {
-        posts.push(dirent.name)
+        const path = dirent.name
+        const data = fs.readFileSync(postsPath + path, 'utf8')
+        const content = fm(data)
+
+        posts.push({
+            post_path: path,
+            post_url: path.replace(/\.md$/, ''),
+            meta: content.attributes
+        })
     }
-    return posts.map((p) => p.replace(/\.md$/, ''))
+    return posts;
 }
 
 async function gen_post_list(posts) {
     const file = await fs.promises.open('assets/posts.js', 'w+')
-    file.write('const posts = [' + posts.map((p) => `\n  '${p.replace(/\.md$/, '')}'`).join(',') + '\n]\n')
+    file.write('const posts = [' + posts.map((p) => `\n  '${p.post_url}'`).join(',') + '\n]\n')
     file.write('export default posts\n')
 }
 
 async function gen_post_pages(posts) {
-    for (fname of posts) {
-        var fileContent = `<template lang="pug">
+    for (post of posts) {
+        var meta = []
+        var make_meta = (val, x) => ({ hid: `${val}`, property: `${val}`, content: x })
+
+        meta.push(make_meta('og:type', 'article'))
+        meta.push(make_meta('article:published_time', post.meta.pubDate))
+        meta.push(make_meta('article:author', 'Eugene Minibaev'))
+        meta.push(make_meta('og:title', post.meta['title']))
+        if ('description' in post.meta) {
+            meta.push(make_meta('og:description', post.meta['description']))
+            meta.push(make_meta('description', post.meta['description']))
+        }
+        if ('image' in post.meta) {
+            meta.push(make_meta('og:image', post.meta['image']))
+        }
+
+        const fileContent = `<template lang="pug">
 Post(:post="Content")/
 </template>
 
 <script>
 import Post from '~/components/post'
-import Data from '~/articles/${fname}.md'
+import Data from '~/articles/${post.post_path}'
 
 export default {
   components: {
     Post,
+  },
+  head() {
+      return {
+        meta: [
+            ${meta.map((m) => JSON.stringify(m)).join(',\n            ')}
+        ],
+      }
   },
   data: () => ({
     Content: Data.vue.component
@@ -42,7 +70,7 @@ export default {
 }
 </script>
 `
-        fs.writeFileSync(`pages/posts/${fname}.vue`, fileContent)
+        fs.writeFileSync(`pages/posts/${post.post_url}.vue`, fileContent)
     }
 }
 
@@ -57,17 +85,11 @@ async function gen_rss(posts) {
     });
 
     for (post of posts) {
-        const name = postFormat.exec(post).groups.name.split('_').map((x) => {
-            return x[0].toUpperCase() + x.substr(1)
-        }).join(' ')
-
-        const pubDate = pubDatFormat.exec(fs.readFileSync(postsPath + post + '.md', 'utf8')).groups.date
-
         feed.addItem({
-            title: name,
-            id: 'https://kitsu.me/posts/' + post,
-            link: 'https://kitsu.me/posts/' + post,
-            date: strptime(pubDate, '%Y-%m-%d %H:%M:%S') ,
+            title: post.meta.title,
+            id: 'https://kitsu.me/posts/' + post.post_url,
+            link: 'https://kitsu.me/posts/' + post.post_url,
+            date: post.meta.pubDate,
         })
     }
 

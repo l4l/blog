@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "node populate-posts.js && nuxt",
     "build": "node populate-posts.js && nuxt build",
-    "start": "nuxt start",
+    "start": "node populate-posts.js && nuxt start",
     "generate": "node populate-posts.js && nuxt generate"
   },
   "dependencies": {
@@ -15,8 +15,8 @@
   },
   "devDependencies": {
     "feed": "^4.2.0",
+    "front-matter": "^4.0.2",
     "frontmatter-markdown-loader": "^3.6.1",
-    "micro-strptime": "^0.2.3",
     "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0"
   }
